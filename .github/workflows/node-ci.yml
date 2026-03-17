@@ -9,7 +9,6 @@ on:
     secrets:
       CODECOV_TOKEN:
         description: If supplied, send coverage metrics to codecov.io
-        required: true
 
 jobs:
   build:
