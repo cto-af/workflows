@@ -1,0 +1,42 @@
+on:
+  workflow_call:
+    inputs:
+      script:
+        description: 'Which npm script to run'
+        required: false
+        type: string
+        default: build
+    secrets:
+      CODECOV_TOKEN:
+        description: If supplied, send coverage metrics to codecov.io
+        required: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [20, 22, 24, 25]
+        platform: [ubuntu-latest]
+    runs-on: ${{ matrix.platform }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: true
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v6
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install pnpm
+        uses: pnpm/action-setup@v5
+        with:
+          cache: true
+          run_install: true
+      - name: Test ${{ matrix.node-version }} ${{ matrix.platform }}
+        run: npm run ${{ inputs.script }}
+      - name: Upload coverage reports to Codecov
+        if: secrets.CODECOV_TOKEN
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
