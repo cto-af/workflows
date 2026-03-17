@@ -34,7 +34,7 @@ jobs:
       - name: Test ${{ matrix.node-version }} ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - name: Upload coverage reports to Codecov
-        if: secrets.CODECOV_TOKEN
+        if: secrets && secrets.CODECOV_TOKEN
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
