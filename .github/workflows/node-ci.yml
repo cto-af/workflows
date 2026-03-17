@@ -18,6 +18,8 @@ jobs:
         node-version: [20, 22, 24, 25]
         platform: [ubuntu-latest]
     runs-on: ${{ matrix.platform }}
+    env:
+      CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -34,7 +36,7 @@ jobs:
       - name: Test ${{ matrix.node-version }} ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - name: Upload coverage reports to Codecov
-        if: ${{ secrets && secrets.CODECOV_TOKEN }}
+        if: env.CODECOV_TOKEN
         uses: codecov/codecov-action@v5
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
