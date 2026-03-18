@@ -1,0 +1,45 @@
+name: Publish Package to npmjs
+on:
+  workflow_call:
+    inputs:
+      script:
+        description: 'Which npm script to run'
+        required: false
+        type: string
+        default: build
+      docs:
+        description: 'Publish docs?'
+        required: false
+        type: boolean
+        default: false
+    secrets:
+      GITHUB_TOKEN:
+        required: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    environment: publish
+    permissions:
+      contents: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24
+          registry-url: 'https://registry.npmjs.org'
+      - uses: pnpm/action-setup@v5
+        with:
+          cache: true
+          run_install: true
+      - name: Build ${{ matrix.node-version }} ${{ matrix.platform }}
+        run: npm run ${{ inputs.script }}
+      - name: Deploy Docs
+        if: inputs.docs
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: docs
+          publish_branch: gh-pages
+      - run: npm pkg delete devDependencies scripts
+      - run: npm publish --access public --provenance
