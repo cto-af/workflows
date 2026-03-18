@@ -38,8 +38,10 @@ jobs:
         with:
           cache: true
           run_install: true
-      - name: Test ${{ matrix.node-version }} ${{ matrix.platform }}
+      - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
+      - name: Audit
+        run: pnpm audit
       - name: Upload coverage reports to Codecov
         if: env.CODECOV_TOKEN
         uses: codecov/codecov-action@v5

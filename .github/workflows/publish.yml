@@ -31,6 +31,7 @@ jobs:
           run_install: true
       - name: ${{ inputs.script }} ${{ matrix.node-version }} ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
+      - run: pnpm audit
       - name: Deploy Docs
         if: inputs.docs
         uses: peaceiris/actions-gh-pages@v4
