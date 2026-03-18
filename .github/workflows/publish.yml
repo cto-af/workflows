@@ -32,7 +32,7 @@ jobs:
         with:
           cache: true
           run_install: true
-      - name: Build ${{ matrix.node-version }} ${{ matrix.platform }}
+      - name: ${{ inputs.script }} ${{ matrix.node-version }} ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - name: Deploy Docs
         if: inputs.docs
