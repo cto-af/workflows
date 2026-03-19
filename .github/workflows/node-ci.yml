@@ -1,11 +1,6 @@
 on:
   workflow_call:
     inputs:
-      install:
-        description: "Parameters for pnpm run_install, as a JSON string"
-        required: false
-        type: string
-        default: 'true'
       platforms:
         description: 'What platforms to run on, as a JSON string'
         required: false
@@ -47,7 +42,7 @@ jobs:
         uses: pnpm/action-setup@v5
         with:
           cache: true
-          run_install: ${{ inputs.install }}
+          run_install: true
       - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - name: Audit
