@@ -33,7 +33,7 @@ jobs:
       - uses: pnpm/action-setup@v5
         with:
           cache: true
-          run_install: ${{ fromJson(inputs.install) }}
+          run_install: ${{ inputs.install }}
       - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - run: pnpm audit
