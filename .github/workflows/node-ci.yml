@@ -16,6 +16,11 @@ on:
         required: false
         type: string
         default: build
+      versions:
+        description: 'Which versions of node to run, as JSON string'
+        required: false
+        type: string
+        default: '[20, 22, 24, 25]'
     secrets:
       CODECOV_TOKEN:
         description: If supplied, send coverage metrics to codecov.io
@@ -25,7 +30,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [20, 22, 24, 25]
+        node-version: ${{ fromJson(inputs.versions) }}
         platform: ${{ fromJson(inputs.platforms) }}
     runs-on: ${{ matrix.platform }}
     env:
