@@ -6,6 +6,11 @@ on:
         required: false
         type: string
         default: '["ubuntu-latest"]'
+      playwright:
+        description: 'Install playwright if true'
+        required: false
+        type: boolean
+        default: false
       script:
         description: 'Which npm script to run'
         required: false
@@ -43,6 +48,20 @@ jobs:
         with:
           cache: true
           run_install: true
+      - name: Get installed Playwright version
+        if: inputs.playwright
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(pnpm ls @playwright/test --parseable | tail -1)" >> $GITHUB_ENV
+      - name: Playwright Cache
+        if: inputs.playwright
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+      - name: Playwright install
+        if: inputs.playwright
+        run: npx playwright install --with-deps
       - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
       - name: Audit
