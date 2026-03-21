@@ -1,6 +1,11 @@
 on:
   workflow_call:
     inputs:
+      nve:
+        description: 'Cache nve node versions if true'
+        required: false
+        type: boolean
+        default: false
       platforms:
         description: 'What platforms to run on, as a JSON string'
         required: false
@@ -48,11 +53,22 @@ jobs:
         with:
           cache: true
           run_install: true
+      - name: Find nve cache directory
+        if: inputs.nve
+        run: |
+          echo "NVE_CACHE=$(node -e 'cachedir = require("./node_modules/.pnpm/node_modules/cachedir"); console.log(cachedir("nve"))')" >> $GITHUB_ENV
+      - name: Cache node versions for nve in ${{ env.NVE_CACHE }}
+        if: inputs.nve
+        id: cache-nve
+        uses: actions/cache@v4
+        with:
+          path: ${{ env.NVE_CACHE }}
+          key: ${{ runner.os }}-nve
       - name: Get installed Playwright version
         if: inputs.playwright
         id: playwright-version
         run: echo "PLAYWRIGHT_VERSION=$(pnpm ls @playwright/test --parseable | tail -1)" >> $GITHUB_ENV
-      - name: Playwright Cache
+      - name: Playwright Cache ${{ env.PLAYWRIGHT_VERSION }}
         if: inputs.playwright
         uses: actions/cache@v4
         id: playwright-cache

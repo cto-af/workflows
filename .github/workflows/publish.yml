@@ -44,5 +44,5 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
           publish_branch: gh-pages
-      - run: npm pkg delete devDependencies scripts ${{ (inputs.workspaces && '--workspaces') || '' }}
-      - run: npm publish --access public --provenance ${{ (inputs.workspaces && '--workspaces') || '' }}
+      - run: npm pkg delete devDependencies scripts ${{ case(inputs.workspaces, '--workspaces', '') }}
+      - run: npm publish --access public --provenance ${{ case(inputs.workspaces, '--workspaces', '') }}
