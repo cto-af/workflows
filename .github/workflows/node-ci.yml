@@ -25,7 +25,7 @@ on:
         description: 'Which versions of node to run, as JSON string'
         required: false
         type: string
-        default: '[22, 24, 25]'
+        default: '[22, 24, 26]'
     secrets:
       CODECOV_TOKEN:
         description: If supplied, send coverage metrics to codecov.io
