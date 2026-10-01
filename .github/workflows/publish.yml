@@ -43,6 +43,7 @@ jobs:
           run_install: true
       - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
+      - run: npm run docs # hack to get this working
       - run: pnpm audit
       - name: Deploy Docs
         if: inputs.docs
