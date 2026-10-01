@@ -17,6 +17,11 @@ on:
         required: false
         type: boolean
         default: false
+      force_orphan:
+        description: 'Add force_orphan true to the docs step'
+        required: false
+        type: boolean
+        default: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -46,5 +51,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
           publish_branch: gh-pages
+          force_orphan: ${{ inputs.force_orphan }}
       - run: npm pkg delete devDependencies scripts ${{ case(inputs.workspaces, '--workspaces', '') }}
       - run: npm publish --access public --provenance ${{ case(inputs.workspaces, '--workspaces', '') }}
