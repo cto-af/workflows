@@ -21,7 +21,7 @@ on:
         description: 'Add force_orphan true to the docs step'
         required: false
         type: boolean
-        default: false
+        default: true # change this to false after publishing one pkg
 jobs:
   build:
     runs-on: ubuntu-latest
