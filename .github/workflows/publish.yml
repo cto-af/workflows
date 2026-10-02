@@ -21,7 +21,7 @@ on:
         description: 'Add force_orphan true to the docs step'
         required: false
         type: boolean
-        default: true # change this to false after publishing one pkg
+        default: false
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -43,7 +43,6 @@ jobs:
           run_install: true
       - name: Running ${{ inputs.script }} on node ${{ matrix.node-version }}, ${{ matrix.platform }}
         run: npm run ${{ inputs.script }}
-      - run: npm run docs # hack to get this working
       - run: pnpm audit
       - name: Deploy Docs
         if: inputs.docs
