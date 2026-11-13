@@ -30,14 +30,14 @@ jobs:
       contents: write
       id-token: write
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@v7.0.1
         with:
           submodules: true
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@v7.1.0
         with:
           node-version: 26
           registry-url: 'https://registry.npmjs.org'
-      - uses: pnpm/action-setup@v6
+      - uses: pnpm/action-setup@v6.1.1
         with:
           cache: true
           run_install: true
@@ -46,7 +46,7 @@ jobs:
       - run: pnpm audit
       - name: Deploy Docs
         if: inputs.docs
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v4.1.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: docs
